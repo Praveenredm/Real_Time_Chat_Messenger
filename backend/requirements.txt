@@ -4,6 +4,7 @@ sqlalchemy
 python-dotenv
 pyjwt
 python-jose[cryptography]
-passlib[bcrypt]
+passlib
+bcrypt==3.2.2
 psycopg2-binary
 websockets
