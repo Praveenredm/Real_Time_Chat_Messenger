@@ -19,22 +19,29 @@ app.add_middleware(
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
+from pathlib import Path
 
 # --- ROUTERS ---
 app.include_router(auth.router)
 app.include_router(chat.router)
 
 # Mount the frontend directory
-# We assume "chat-frontend" is at the same level as "backend"
-# So relative to "backend/app/main.py", it is "../../chat-frontend"
-# But we are running from "backend", so it is "../chat-frontend"
-START_DIR = os.getcwd() # This should be /backend
-FRONTEND_DIR = os.path.join(START_DIR, "..", "chat-frontend")
+# file is backend/app/main.py
+# parent is backend/app
+# parent.parent is backend
+# parent.parent.parent is project root
+# project root / chat-frontend is what we want
 
-if os.path.exists(FRONTEND_DIR):
-    app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+FRONTEND_DIR = BASE_DIR / "chat-frontend"
+
+if FRONTEND_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
 
 @app.get("/")
 def root():
     # Serve index.html
-    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+    index_file = FRONTEND_DIR / "index.html"
+    if index_file.exists():
+        return FileResponse(index_file)
+    return {"status": "ok", "message": "Frontend not found"}
