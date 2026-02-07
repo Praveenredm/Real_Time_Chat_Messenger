@@ -1,4 +1,6 @@
-const API = "http://127.0.0.1:8000";
+const API = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+  ? "http://127.0.0.1:8000"
+  : ""; // Empty string means use current origin (relative path)
 
 let token = localStorage.getItem("chat_token") || "";
 let username = localStorage.getItem("chat_username") || "";
