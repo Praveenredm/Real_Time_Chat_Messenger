@@ -109,7 +109,9 @@ function showChat() {
 function startChat() {
   if (socket) return;
 
-  socket = new WebSocket(`ws://127.0.0.1:8000/ws/chat?token=${token}`);
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  const wsHost = API ? API.replace(/^http/, "ws") : (protocol + "//" + window.location.host);
+  socket = new WebSocket(`${wsHost}/ws/chat?token=${token}`);
 
   socket.onopen = () => {
     console.log("Connected to chat");
