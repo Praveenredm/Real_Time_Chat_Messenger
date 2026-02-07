@@ -28,11 +28,11 @@ class LoginSchema(BaseModel):
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register(data: RegisterSchema, db: Session = Depends(get_db)):
     try:
-        # Bcrypt has a limit of 72 bytes. Check length.
-        if len(data.password) > 72:
+        # Bcrypt has a limit of 72 bytes. Check byte length.
+        if len(data.password.encode('utf-8')) > 72:
              raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Password must be less than 72 characters"
+                detail="Password is too long (max 72 bytes)"
             )
 
         user = User(
