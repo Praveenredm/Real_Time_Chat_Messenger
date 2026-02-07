@@ -37,6 +37,13 @@ def register(data: RegisterSchema, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username or email already exists"
         )
+    except Exception as e:
+        print(f"REGISTER ERROR: {e}")
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
 
     # Added "sub" for username
     token = create_token({"user_id": user.id, "sub": user.username})
