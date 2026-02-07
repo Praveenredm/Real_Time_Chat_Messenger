@@ -88,3 +88,30 @@ Then open `http://localhost:8080` in your browser.
 -   **CORS Error**: If you see a CORS error in the console, verify the backend is running. If opening the HTML file directly doesn't work, try the `python -m http.server` method mentioned above.
 -   **Database Error**: If you see "no such table", make sure you ran `python create_tables.py`.
 -   **Duplicate Messages**: If you see double messages, refresh the page. The app logic handles self-message deduplication.
+
+## Deployment (Render)
+
+This app is ready for deployment on [Render](https://render.com).
+
+1.  **Create a Database**:
+    -   Go to your Render Dashboard.
+    -   Click **New +** -> **PostgreSQL**.
+    -   Name it (e.g., `chat-db`), choose a region, and select the **Free** plan.
+    -   Click **Create Database**.
+    -   Wait for it to be created.
+    -   **Copy the `Internal Database URL`** from the connections section.
+
+2.  **Deploy the Web Service**:
+    -   Click **New +** -> **Web Service**.
+    -   Connect your GitHub repository.
+    -   **Name**: `chat-app`.
+    -   **Runtime**: **Python 3**.
+    -   **Build Command**: `pip install -r backend/requirements.txt`.
+    -   **Start Command**: `cd backend && python create_tables.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+    -   **Environment Variables**:
+        -   `DATABASE_URL`: Paste the `Internal Database URL` you copied.
+        -   `SECRET_KEY`: Add a random secret string.
+    -   Click **Deploy**.
+
+3.  **Use the App**:
+    -   Once deployed, click the URL provided by Render (e.g., `https://chat-app.onrender.com`).
