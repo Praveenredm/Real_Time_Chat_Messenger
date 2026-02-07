@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+# Real_Time_Chat_Messenger
+Real-time chat app built with FastAPI, WebSockets, and PostgreSQL. Supports secure JWT login, instant messaging, and persistent chat history. Demonstrates backend APIs, authentication, database integration, and real-time communication for a scalable full-stack system.
+
+>>>>>>> 99f436b059bd36b763decf04903a35b7f956609e
 # Real-Time Chat Application
 
 A modern, real-time chat application built with **FastAPI** (Backend) and **Vanilla JavaScript** (Frontend).
